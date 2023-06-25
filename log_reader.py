@@ -10,7 +10,6 @@ def utc_timestamp(time_str):
     # Define the format of the input time string
     time_format = "%d/%b/%Y:%H:%M:%S %z"
 
-    # Extract the offset hours and minutes from the input time string
     offset_hours = int(time_str[-5:-3])
     offset_minutes = int(time_str[-3:-1])
 
@@ -55,8 +54,6 @@ if __name__ == '__main__':
     new_df['additional info'] = df['Text'].str.extract(r'HTTP(.*)')
     # Remove double quotes from the 'additional info' column
     new_df['additional info'] = new_df['additional info'].str.replace('"', '')
-
-    print(new_df)
 
     file_path = "~/Desktop/output.csv"
     # Write the new DataFrame to a CSV file with tab-separated values
