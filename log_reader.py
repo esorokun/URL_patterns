@@ -48,5 +48,5 @@ if __name__ == '__main__':
     new_df['additional info'] = new_df['additional info'].str.replace('"', '')
     print(new_df)
 
-    file_path = "~/Desktop/output.txt"
+    file_path = "~/Desktop/output.csv"
     new_df.to_csv(file_path, sep='\t', index=False)
