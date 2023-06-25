@@ -28,7 +28,6 @@ def utc_timestamp(time_str):
 
     # Calculate the timestamp in seconds since the Unix epoch (January 1, 1970)
     timestamp = (dt_utc - datetime.datetime(1970, 1, 1, tzinfo=pytz.utc)).total_seconds()
-
     return timestamp
 
 
