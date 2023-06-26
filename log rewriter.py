@@ -15,8 +15,6 @@ def UTC_timestamp(time_str):
 
     # Calculate the total offset in minutes
     total_offset_minutes = offset_hours * 60 + offset_minutes
-
-    # Convert the input time string to a datetime object
     dt = datetime.datetime.strptime(time_str, time_format)
 
     # Create a FixedOffset timezone object based on the total offset
