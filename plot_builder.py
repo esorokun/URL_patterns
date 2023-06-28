@@ -17,7 +17,7 @@ class Plot_Builder:
 
     def plot_build(self, name, show=1):
         df = self.data_frame
-        if name in ['minorIOV', 'majorIOV', 'status']:
+        if name in ['minorIOV', 'majorIOV']:
             y_axis = df[name]
         else:
             unique_names = list(set(df[name]))

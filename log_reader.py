@@ -51,7 +51,7 @@ class Log_Reader:
         new_df['majorIOV'] = df['Text'].apply(lambda x: re.findall(re.escape('majorIOV=') + '(.*?)' + re.escape('&'), x)[0])
         new_df['minorIOV'] = df['Text'].apply(lambda x: re.findall(re.escape('minorIOV=') + '(.*?)' + re.escape(' '), x)[0])
         new_df['HTTP_version'] = df['Text'].apply(lambda x: re.findall(re.escape('HTTP/') + '(.*?)' + re.escape('"'), x)[0])
-
+        new_df['byte size'] = df['Text'].apply(lambda x: re.findall(re.escape('" 200 ') + '(.*?)' + re.escape(' "-"'), x)[0])
         new_df['additional info'] = df['Text'].str.extract(r'HTTP(.*)')
         new_df['additional info'] = new_df['additional info'].str.replace('"', '')
 
