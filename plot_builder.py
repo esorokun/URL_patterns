@@ -17,22 +17,17 @@ class Plot_Builder:
                f"For major and minor IOV you can use plot_num() \n" \
                f"If you are trying to build plot for words (gtName, client IP) - try plot_word()"
 
-    def plot_num(self, num_name):
+    def plot_build(self, name):
         df = self.data_frame
-        plt.scatter(x=df['timestamp'], y=df[num_name], s=2)
+        if name in ['minorIOV', 'majorIOV', 'status']:
+            y_axis = df[name]
+        else:
+            unique_names = list(set(df[name]))
+            name_to_num = {word: i for i, word in enumerate(unique_names)}
+            y_axis = [name_to_num[word] for word in df[name]]
+            plt.yticks(range(len(unique_names)), unique_names)
+        plt.scatter(x=df['timestamp'], y=y_axis, s=2)
         plt.xlabel('Timestamp')
-        plt.ylabel(num_name)
+        plt.ylabel(name)
         plt.show()
 
-    def plot_word(self, word_name):
-        df = self.data_frame
-        unique_words = list(set(df[word_name]))
-        word_to_num = {word: i for i, word in enumerate(unique_words)}
-
-        y = [word_to_num[word] for word in df[word_name]]
-
-        plt.scatter(x=df['timestamp'], y=y, s=2)
-        plt.xlabel('Timestamp')
-        plt.ylabel(word_name)
-        plt.yticks(range(len(unique_words)), unique_words)
-        plt.show()
