@@ -7,4 +7,4 @@ from datetime import datetime
 if __name__ == '__main__':
     log = Log_Reader('~/Desktop/log_file_full.txt', '~/Desktop/output.csv')
     plots = Plot_Builder(log.log_read())
-    plots.plot_build('majorIOV')
+    plots.plot_top_6()
