@@ -4,11 +4,17 @@ import re
 import time
 import pytz
 import numpy as np
-
+import os
 class Log_Reader:
     def __init__(self, log_path, output_path):
         self.log_path = log_path
         self.output_path = output_path
+
+    def __str__(self):
+        return f"Here is the path to the output log file: {self.output_path} \n" \
+               f"You can use log_rewrite() for transfer your file into the csv format \n" \
+               f"Main method for reading log is log_read() \n" \
+               f"If there is no file that exists in output path - it creates one \n"
     def UTC_timestamp(self, time_str):
         time_format = "%d/%b/%Y:%H:%M:%S %z"
 
@@ -33,11 +39,11 @@ class Log_Reader:
         df.columns = ['Text']
 
         # Extract the info from the log file
-        new_df['remote_addr'] = df['Text'].apply(lambda x: re.findall(r'(.*?)' + re.escape(' - - '), x)[0])
+        new_df['client IP'] = df['Text'].apply(lambda x: re.findall(r'(.*?)' + re.escape(' - - '), x)[0])
         new_df['time_local'] = df['Text'].apply(lambda x: re.findall(r'\[(.*?)\]', x)[0])
 
         # Apply the 'UTC_timestamp' function to convert 'time_local' to a timestamp
-        new_df['timestamp'] = new_df['time_local'].apply(UTC_timestamp)
+        new_df['timestamp'] = new_df['time_local'].apply(self.UTC_timestamp)
 
         new_df['status'] = df['Text'].apply(lambda x: re.findall(re.escape('" ') + '(.*?)' + re.escape(' '), x)[0])
         new_df['request'] = df['Text'].apply(lambda x: re.findall(re.escape('"') + '(.*?)' + re.escape('/?'), x)[0])
@@ -53,7 +59,10 @@ class Log_Reader:
         # Write the new DataFrame to a CSV file with tab-separated values
         new_df.to_csv(file_path, sep='\t', index=False)
 
-        def log_read(self):
-            log_rewrite()
-            df = pd.read_csv(self.output_path)
-            return df
+    def log_read(self):
+        if os.path.exists(self.output_path):
+            print('file exists')
+        else:
+            self.log_rewrite()
+        df = pd.read_csv(self.output_path, delimiter='\t')
+        return df
