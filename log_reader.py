@@ -9,12 +9,22 @@ class Log_Reader:
     def __init__(self, log_path, output_path):
         self.log_path = log_path
         self.output_path = output_path
+        self.checker_path = 'C:/Users/Ernest/PycharmProjects/URL Pattern seeker/files'
 
     def __str__(self):
         return f"Here is the path to the output log file: {self.output_path} \n" \
                f"You can use log_rewrite() for transfer your file into the csv format \n" \
                f"Main method for reading log is log_read() \n" \
                f"If there is no file that exists in output path - it creates one \n"
+
+    def copy_input(self, source_file, destination_directory, new_name):
+        with open(source_file, 'rb') as file:
+            content = file.read()
+
+        new_file_path = destination_directory + '/' + new_name
+
+        with open(new_file_path, 'wb') as file:
+            file.write(content)
 
     def file_equality(self, file1_path, file2_path):
         with open(file1_path, 'rb') as file1:
@@ -67,11 +77,13 @@ class Log_Reader:
 
         file_path = self.output_path
         new_df.to_csv(file_path, sep='\t', index=False)
+        self.copy_input(self.log_path, self.checker_path, 'check.txt')
+
 
     def log_read(self):
-        if os.path.exists(self.output_path):
-            print('file exists')
-        else:
+        if not os.path.exists(self.output_path):
+            self.log_rewrite()
+        elif not self.file_equality(self.log_path, self.checker_path):
             self.log_rewrite()
         df = pd.read_csv(self.output_path, delimiter='\t')
         return df

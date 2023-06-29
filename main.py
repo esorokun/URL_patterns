@@ -7,6 +7,6 @@ from datetime import datetime
 if __name__ == '__main__':
     log = Log_Reader('C:/Users/Ernest/PycharmProjects/URL Pattern seeker/files/log_file_full.txt',
                      'C:/Users/Ernest/PycharmProjects/URL Pattern seeker/files/output.csv')
-    #plots = Plot_Builder(log.log_read())
-    #plots.plot_top_6()
-    #plots.plot_build('minorIOV')
+    plots = Plot_Builder(log.log_read())
+    plots.plot_top_6()
+    plots.plot_build('minorIOV')
