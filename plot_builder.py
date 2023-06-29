@@ -8,7 +8,8 @@ from log_reader import Log_Reader
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-class Plot_Builder:
+
+class Plot_builder:
     def __init__(self, data_frame):
         self.data_frame = data_frame
 

@@ -5,11 +5,13 @@ import time
 import pytz
 import numpy as np
 import os
-class Log_Reader:
+
+
+class Log_reader:
     def __init__(self, log_path, output_path):
         self.log_path = log_path
         self.output_path = output_path
-        self.checker_path = 'C:/Users/Ernest/PycharmProjects/URL Pattern seeker/files'
+        self.checker_path = 'C:/Users/Ernest/PycharmProjects/URL Pattern seeker/files/check.txt'
 
     def __str__(self):
         return f"Here is the path to the output log file: {self.output_path} \n" \
@@ -17,11 +19,11 @@ class Log_Reader:
                f"Main method for reading log is log_read() \n" \
                f"If there is no file that exists in output path - it creates one \n"
 
-    def copy_input(self, source_file, destination_directory, new_name):
+    def copy_input(self, source_file, destination_directory):
         with open(source_file, 'rb') as file:
             content = file.read()
 
-        new_file_path = destination_directory + '/' + new_name
+        new_file_path = destination_directory
 
         with open(new_file_path, 'wb') as file:
             file.write(content)
@@ -77,13 +79,14 @@ class Log_Reader:
 
         file_path = self.output_path
         new_df.to_csv(file_path, sep='\t', index=False)
-        self.copy_input(self.log_path, self.checker_path, 'check.txt')
-
+        self.copy_input(self.log_path, self.checker_path)
 
     def log_read(self):
         if not os.path.exists(self.output_path):
+            print('Error: You change file path')
             self.log_rewrite()
         elif not self.file_equality(self.log_path, self.checker_path):
+            print('Error: New file in the dir')
             self.log_rewrite()
         df = pd.read_csv(self.output_path, delimiter='\t')
         return df
