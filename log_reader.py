@@ -15,6 +15,20 @@ class Log_Reader:
                f"You can use log_rewrite() for transfer your file into the csv format \n" \
                f"Main method for reading log is log_read() \n" \
                f"If there is no file that exists in output path - it creates one \n"
+
+    def file_equality(self, file1_path, file2_path):
+        with open(file1_path, 'rb') as file1:
+            with open(file2_path, 'rb') as file2:
+                # Read the contents of both files
+                content1 = file1.read()
+                content2 = file2.read()
+
+                # Compare the contents byte by byte
+                if content1 == content2:
+                    return True
+                else:
+                    return False
+
     def UTC_timestamp(self, time_str):
         time_format = "%d/%b/%Y:%H:%M:%S %z"
 
@@ -31,18 +45,14 @@ class Log_Reader:
         timestamp = (dt_utc - datetime.datetime(1970, 1, 1, tzinfo=pytz.utc)).total_seconds()
         return timestamp
 
-
     def log_rewrite(self):
-        # Read the log file into a DataFrame
         df = pd.read_csv(self.log_path, header=None)
         new_df = pd.DataFrame()
         df.columns = ['Text']
 
-        # Extract the info from the log file
         new_df['client IP'] = df['Text'].apply(lambda x: re.findall(r'(.*?)' + re.escape(' - - '), x)[0])
         new_df['time_local'] = df['Text'].apply(lambda x: re.findall(r'\[(.*?)\]', x)[0])
 
-        # Apply the 'UTC_timestamp' function to convert 'time_local' to a timestamp
         new_df['timestamp'] = new_df['time_local'].apply(self.UTC_timestamp)
 
         new_df['status'] = df['Text'].apply(lambda x: re.findall(re.escape('" ') + '(.*?)' + re.escape(' '), x)[0])
@@ -56,7 +66,6 @@ class Log_Reader:
         new_df['additional info'] = new_df['additional info'].str.replace('"', '')
 
         file_path = self.output_path
-        # Write the new DataFrame to a CSV file with tab-separated values
         new_df.to_csv(file_path, sep='\t', index=False)
 
     def log_read(self):
