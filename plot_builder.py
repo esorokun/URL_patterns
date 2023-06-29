@@ -4,12 +4,11 @@ import re
 import time
 import pytz
 import numpy as np
-from log_reader import Log_Reader
 import seaborn as sns
 import matplotlib.pyplot as plt
 
 
-class Plot_builder:
+class PlotBuilder:
     def __init__(self, data_frame):
         self.data_frame = data_frame
 

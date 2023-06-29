@@ -7,7 +7,7 @@ import numpy as np
 import os
 
 
-class Log_reader:
+class LogReader:
     def __init__(self, log_path, output_path):
         self.log_path = log_path
         self.output_path = output_path
