@@ -14,6 +14,7 @@ def log_build():
 
 
 if __name__ == '__main__':
-    df = create_sim_data(250, 140)
-    cache = CacheSim(df)
-    cache.cache_use(True)
+    for i in range(1, 10):
+        df = create_sim_data(100, 14)
+        cache = CacheSim(df, 10, 12)
+        cache.cache_use()
