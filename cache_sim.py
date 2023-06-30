@@ -17,14 +17,14 @@ def create_sim_data(n, max_rand):
 
 class UniqueList(list):
     def append(self, item):
-        if item[0] in self:
+        if item in self:
             self.remove(item)
         super().append(item)
-        for item in self:
-            item[1] -= 1
-            if item[1] <= 0:
-                self.remove(item)
-
+        print(self[0][0])
+        #for item in self:
+         #   item[1] -= 1
+          #  if item[1] <= 0:
+           #     self.remove(item)
 
 
 class CacheSim:
@@ -32,6 +32,7 @@ class CacheSim:
         self.data_frame = data_frame
         self.max_cache_size = max_cache_size
         self.life_time = life_time
+
     def __str__(self):
         return f"This class was created for cache simulation"
 
@@ -47,14 +48,14 @@ class CacheSim:
         major_iovs = df['major_iov']
 
         for major_iov in major_iovs:
-            if major_iov not in cache:
+            if major_iov not in (item[0] for item in cache):
                 db_counter += 1
                 cache.append([major_iov, self.life_time])
                 if len(cache) >= self.max_cache_size:
                     del cache[0]
             else:
                 cache.append([major_iov, self.life_time])
-            print(cache)
+            #print(cache)
         print(f'db_counter = {db_counter}')
         print(f'cache % = {round(1 - db_counter/len(major_iovs),2)}')
 
