@@ -7,6 +7,9 @@ class Cache(ABC):
     def __init__(self):
         self.counter = 0
 
+    def __str__(self):
+        return NotImplemented
+
     def consider(self, time_stamp, value):
         return NotImplemented
 
@@ -18,6 +21,9 @@ class SimpleCache(Cache):
     def __init__(self):
         super().__init__()
         self.contents = set()
+
+    def __str__(self):
+        return self.__class__.__name__
 
     def consider(self, time_stamp, value):
         if value in self.contents:
@@ -33,6 +39,9 @@ class TimedCache(Cache):
         super().__init__()
         self.life_time = life_time
         self.value_ts_dict = {}  # {iov_1: ts_1, iov_2: ts_2, ...}
+
+    def __str__(self):
+        return self.__class__.__name__
 
     def consider(self, time_stamp, value):
         if value in self.value_ts_dict:
@@ -50,6 +59,9 @@ class SizeCache(Cache):
         super().__init__()
         self.size = size
         self.value_ts_dict = {}  # {iov_1: ts_1, iov_2: ts_2, ...}
+
+    def __str__(self):
+        return self.__class__.__name__
 
     def consider(self, time_stamp, value):
         if value in self.value_ts_dict:
@@ -75,7 +87,7 @@ def generate_ts_value_pairs(n=100):
 def test_cache(cache: Cache, ts_values_pairs):
     for ts, value in ts_values_pairs:
         cache.consider(ts, value)
-    print(f'cache.counter = {cache.counter}')
+    print(f'cache.counter of {str(cache)} = {cache.counter}')
 
 
 if __name__ == '__main__':
