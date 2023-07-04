@@ -7,7 +7,7 @@ from cache_sim import CacheSim, create_sim_data
 
 def log_build():
     log = LogReader('C:/Users/Ernest/PycharmProjects/URL Pattern seeker/files/log_file_full.txt',
-                     'C:/Users/Ernest/PycharmProjects/URL Pattern seeker/files/output.csv')
+                    'C:/Users/Ernest/PycharmProjects/URL Pattern seeker/files/output.csv')
     plots = PlotBuilder(log.log_read())
     plots.plot_top_6()
     plots.plot_build('minorIOV')
