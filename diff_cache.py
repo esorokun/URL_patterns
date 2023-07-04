@@ -84,7 +84,9 @@ class LinearCache(Cache):
         return self.__class__.__name__
 
     def consider(self, time_stamp, value):
-        if len(self.value_ts_dict) > 5:
+        # if value in self.value_ts_dict:
+        #     self.counter += 1
+        if len(self.value_ts_dict) > 2:
             date_list = np.array(list(self.value_ts_dict.values()))
             timestamp = np.array([dt.timestamp() for dt in date_list])
             timestamp = timestamp.reshape(-1, 1)
@@ -92,10 +94,11 @@ class LinearCache(Cache):
             #print(timestamp)
             model = LinearRegression()
             model.fit(timestamp, values)
-            X_pred = np.array([datetime.timestamp(time_stamp)])
-            X_pred = X_pred.reshape(1, -1)
+            X_pred = np.array([datetime.timestamp(time_stamp)]).reshape(1, -1)
             predicted_value = round(model.predict(X_pred)[0])
-            if (predicted_value - 2) < value < (predicted_value + 2):
+            # if predicted_value == value:
+            #     self.counter += 1
+            if predicted_value - 2 < value < predicted_value + 2:
                 self.counter += 1
 
         if len(self.value_ts_dict) > self.size:
@@ -115,12 +118,12 @@ def generate_ts_value_pairs(n=100):
     return list(zip(time_stamps, values))
 
 
-def linear_data(n=100):
+def linear_data(n=100, rand=2):
     time_stamps = [datetime.now() + timedelta(seconds=random.random()) for i in range(n)]
     time_stamps.sort()
     tm = np.array([tm.timestamp() for tm in time_stamps])
     start = tm[0]
-    values = [round((i - start)*100) + random.randint(0, 2) for i in tm]
+    values = [round((i - start)*100) + random.randint(0, rand) for i in tm]
     return list(zip(time_stamps, values))
 
 
@@ -131,7 +134,7 @@ def test_cache(cache: Cache, ts_values_pairs):
 
 
 if __name__ == '__main__':
-    test_data = linear_data() #generate_ts_value_pairs(100)
+    test_data = linear_data(300, 2) #generate_ts_value_pairs(100)
     test_cache(SimpleCache(), test_data)
     test_cache(TimedCache(life_time=timedelta(seconds=0.1)), test_data)
     test_cache(SizeCache(), test_data)
